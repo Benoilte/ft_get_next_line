@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/02 12:18:00 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:39:23 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 char *get_next_line(int fd)
 {
-	static int calls = 0;
-	static char log = 'a';
+	char	*text;
 
-	printf("%d\n", calls);
-	calls += fd;
-	log++;
-	printf("%d\n", calls);
-	printf("%c\n", log);
+	text = (char *)calloc(sizeof(char), BUFFER_SIZE);
+	read(fd, text, BUFFER_SIZE);
+	printf("%s", text);
+	free(text);
 	return ("hello world");
 }
