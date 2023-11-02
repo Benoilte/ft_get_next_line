@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/24 14:22:06 by bebrandt          #+#    #+#              #
-#    Updated: 2023/11/02 12:13:49 by bebrandt         ###   ########.fr        #
+#    Updated: 2023/11/02 15:05:23 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,15 @@ HDRS		=	-I .
 
 CC			=	gcc
 
+BUFFER_MACCRO = BUFFER_SIZE=
+
+BS = 
+
+ifdef BS
+CFLAGS		=	-Wall -Wextra -Werror -D $(BUFFER_MACCRO)$(BS)
+else
 CFLAGS		=	-Wall -Wextra -Werror
+endif
 
 RM			=	rm -f
 
