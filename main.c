@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 11:54:17 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/02 12:11:30 by bebrandt         ###   ########.fr       */
+/*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
+/*   Updated: 2023/11/02 12:16:16 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEX_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
 
-# include <stdio.h>
-
-char *get_next_line(int fd);
-
-#endif
+int	main(void)
+{
+	printf("%s\n", get_next_line(4));
+	printf("%s\n", get_next_line(4));
+	printf("%s\n", get_next_line(4));
+	return (0);
+}

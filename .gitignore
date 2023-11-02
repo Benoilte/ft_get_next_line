@@ -9,4 +9,4 @@ a.out
 .vscode/
 .editorconfig
 .metals/
-test_ft_get_next_line
+test_get_next_line
