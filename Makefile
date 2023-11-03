@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/24 14:22:06 by bebrandt          #+#    #+#              #
-#    Updated: 2023/11/02 15:05:23 by bebrandt         ###   ########.fr        #
+#    Updated: 2023/11/03 14:25:46 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ all: $(NAME)
 	$(CC) $(HDRS) $(CFLAGS) -c $< -o $@
 
 $(NAME):	$(OBJS)
-	$(CC) $(HDRS) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(HDRS) $(CFLAGS) $(OBJS) -o $(NAME) -fsanitize=address -g
 
 clean:
 	$(RM) $(OBJS)
