@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/02 16:39:23 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/03 07:25:18 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,20 @@
 
 char *get_next_line(int fd)
 {
-	char	*text;
+	static char	text[BUFFER_SIZE + 1];
+	int	i = 0;
+	int	n = BUFFER_SIZE + 2;
 
-	text = (char *)calloc(sizeof(char), BUFFER_SIZE);
+	while (n)
+	{
+		printf("téxt[%d]: %c\n", i, text[i]);
+		i++;
+		n--;
+	}
+	printf("str_len: %d\n", i);
+	printf("1: %s\n", text);
 	read(fd, text, BUFFER_SIZE);
-	printf("%s", text);
-	free(text);
+	printf("2: %s\n", text);
+	printf("---------------\n");
 	return ("hello world");
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/02 16:40:18 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/03 06:37:48 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	main(void)
 	fd = open(file, O_RDONLY);
 	if (fd > 0)
 	{
+		get_next_line(fd);
+		get_next_line(fd);
 		get_next_line(fd);
 		get_next_line(fd);
 		get_next_line(fd);
