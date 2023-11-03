@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:54:17 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/03 17:50:57 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/03 18:42:45 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,21 @@
 typedef struct s_gnl_lst
 {
 	char				*str;
+	int					len;
 	struct s_gnl_lst	*next;
 }	t_gnl_lst;
 
 char		*get_next_line(int fd);
 char		*ft_strdup(const char *s1);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
-void		ft_next_line(char *stash, t_gnl_lst *lst);
+char		*ft_get_line(char *stash, t_gnl_lst *lst, int *trig);
 char		*ft_copy_new_line(t_gnl_lst *lst);
 int			ft_check_new_line(char *str);
 size_t		ft_strlen(const char *s);
 
 // gnl_lst function
 
-void		ft_gnl_lstadd_back(t_gnl_lst **lst, void *str);
+void		ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, int bytes);
 void		ft_gnl_lstclear(t_gnl_lst **lst);
 int			ft_gnl_lstsize(t_gnl_lst *lst);
 

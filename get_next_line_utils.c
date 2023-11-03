@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/03 17:50:03 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:13:13 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_gnl_lstsize(t_gnl_lst *lst)
 Add new elem. at the end of the list and set new->next as null
 set new elem. as first elem. of the list if '*lst' is null.
 */
-void	ft_gnl_lstadd_back(t_gnl_lst **lst, void *str)
+void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, int bytes)
 {
 	t_gnl_lst	*last;
 	t_gnl_lst	*new;
@@ -45,6 +45,7 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, void *str)
 		ft_gnl_lstclear(lst);
 		return ;
 	}
+	new->len = bytes;
 	new->str = str;
 	new->next = (void *)0;
 	if (!lst)
@@ -61,7 +62,7 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, void *str)
 }
 
 /*
-Deletes and free the memory of the element passed as parameter 
+Deletes and free the memory of the element passed as parameter
 and all the following elements
 */
 void	ft_gnl_lstclear(t_gnl_lst **lst)
@@ -144,5 +145,6 @@ char	*ft_copy_new_line(t_gnl_lst *lst)
 		tmp = tmp->next;
 	}
 	*new_line = '\0';
+	ft_gnl_lstclear(&lst);
 	return (new_line - len);
 }

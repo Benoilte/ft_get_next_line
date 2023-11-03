@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/03 17:57:31 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:18:53 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,18 @@ char	*get_next_line(int fd)
 	is_new_line = 0;
 	if (!ft_check_new_line(str))
 		bytes_read = read(fd, str + ft_strlen(str), BUFFER_SIZE - ft_strlen(str));
+	else
+		new_line = ft_get_line(str, lst, &is_new_line);
 	while (is_new_line == 0 && bytes_read > 0)
 	{
-		if (ft_gnl_lstsize(lst) != 0 && !ft_check_new_line(str))
+		if (ft_gnl_lstsize(lst) != 0)
 			bytes_read = read(fd, str, BUFFER_SIZE);
 		if (ft_check_new_line(str))
-		{
-			ft_next_line(str, lst);
-			new_line = ft_copy_new_line(lst);
-			is_new_line = 1;
-		}
+			new_line = ft_get_line(str, lst, &is_new_line);
 		else
-			ft_gnl_lstadd_back(&lst, ft_strdup(str));
+			ft_gnl_lstadd_back(&lst, ft_strdup(str), bytes_read);
 	}
-	ft_gnl_lstclear(&lst);
+	printf("stash_len : %zu", ft_strlen(str));
 	return (new_line);
 }
 
@@ -56,7 +54,7 @@ size_t	ft_strlen(const char *s)
 }
 
 /*
-Allocates sufficient memory for a copy of the string s1, does the copy, and 
+Allocates sufficient memory for a copy of the string s1, does the copy, and
 returns a pointer to it. If insufficient memory is available, NULL is returned
 */
 char	*ft_strdup(const char *s1)
@@ -99,19 +97,23 @@ int	ft_check_new_line(char *str)
 Copy stash in str until the '\n' included. Add str as last element of lst.
 Replace stash with the part of stash behind the '\n'
 */
-void	ft_next_line(char *stash, t_gnl_lst *lst)
+char	*ft_get_line(char *stash, t_gnl_lst *lst, int *trig)
 {
 	int			i;
 	int			t;
 	char		*str;
+	char		*new_line;
 
+	*trig = 1;
 	i = 0;
 	while (stash[i++] != '\n')
 		;
 	str = ft_substr(stash, 0, i);
-	ft_gnl_lstadd_back(&lst, str);
+	ft_gnl_lstadd_back(&lst, str, 14);
 	t = 0;
 	while (stash[i])
 		stash[t++] = stash[i++];
 	stash[t] = '\0';
+	new_line = ft_copy_new_line(lst);
+	return (new_line);
 }

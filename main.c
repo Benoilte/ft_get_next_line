@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/03 17:33:18 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/03 19:14:49 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ int	main(void)
 	i = 0;
 	if (fd > 0)
 	{
-		while (i != 42)
+		while (i != 58)
 		{
 			new_line = get_next_line(fd);
-			printf("\nget_next_line\n");
+			printf("\nget_next_line: %d \n", i + 1);
 			printf("%s\n", new_line);
-			free(new_line);
+			if (new_line)
+				free(new_line);
 			i++;
 		}
 		close(fd);
