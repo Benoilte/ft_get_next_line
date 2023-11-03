@@ -6,27 +6,11 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/03 10:26:16 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:50:03 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/*
-Create a new t_gnl_lst struct with malloc. assign var member content with
-params 'content' and assign var member next to NULL
-*/
-t_gnl_lst	*ft_gnl_lstnew(void *str)
-{
-	t_gnl_lst	*new;
-
-	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
-	if (!new)
-		return ((void *)0);
-	new->str = str;
-	new->next = (void *)0;
-	return (new);
-}
 
 /*
 Count number of element of the linked list and return the value.
@@ -50,11 +34,20 @@ int	ft_gnl_lstsize(t_gnl_lst *lst)
 Add new elem. at the end of the list and set new->next as null
 set new elem. as first elem. of the list if '*lst' is null.
 */
-void	ft_gnl_lstadd_back(t_gnl_lst **lst, t_gnl_lst *new)
+void	ft_gnl_lstadd_back(t_gnl_lst **lst, void *str)
 {
 	t_gnl_lst	*last;
+	t_gnl_lst	*new;
 
-	if (!lst || !new)
+	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
+	if (!new)
+	{
+		ft_gnl_lstclear(lst);
+		return ;
+	}
+	new->str = str;
+	new->next = (void *)0;
+	if (!lst)
 		return ;
 	if (!*lst)
 		*lst = new;
@@ -71,7 +64,7 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, t_gnl_lst *new)
 Deletes and free the memory of the element passed as parameter 
 and all the following elements
 */
-void	ft_gnl_lstclear(t_gnl_lst **lst, void (*del)(void *))
+void	ft_gnl_lstclear(t_gnl_lst **lst)
 {
 	t_gnl_lst	*next_el;
 
@@ -86,4 +79,70 @@ void	ft_gnl_lstclear(t_gnl_lst **lst, void (*del)(void *))
 	}
 	free(*lst);
 	*lst = (void *)0;
+}
+
+/*
+Allocate and return a new string from the string 's'.
+This new string starts at index 'start' and has a maximum size of 'len'.
+NULL is returned if the memory allocation failed.
+*/
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	unsigned int	i;
+	unsigned int	s_len;
+	char			*dest;
+
+	i = 0;
+	s_len = ft_strlen((char *)s);
+	if (!s_len || start > s_len - 1)
+		return (ft_strdup(""));
+	s += start;
+	s_len -= start;
+	if (len < s_len)
+	{
+		dest = (char *)malloc((len + 1) * sizeof(char));
+		if (!dest)
+			return ((void *)0);
+		while (s[i] && i < len)
+		{
+			dest[i] = s[i];
+			i++;
+		}
+		dest[i] = '\0';
+		return (dest);
+	}
+	return (ft_strdup(s));
+}
+
+/*
+Go through lst and concatenate all str member together.
+Return a new string corresponding to a new line.
+*/
+char	*ft_copy_new_line(t_gnl_lst *lst)
+{
+	int			len;
+	char		*str;
+	char		*new_line;
+	t_gnl_lst	*tmp;
+
+	tmp = lst;
+	len = 0;
+	while (tmp)
+	{
+		len += ft_strlen(tmp->str);
+		tmp = tmp->next;
+	}
+	new_line = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new_line)
+		return ((void *)0);
+	tmp = lst;
+	while (tmp)
+	{
+		str = tmp->str;
+		while (*str)
+			*new_line++ = *str++;
+		tmp = tmp->next;
+	}
+	*new_line = '\0';
+	return (new_line - len);
 }
