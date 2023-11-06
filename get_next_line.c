@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 15:39:27 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:09:37 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ char	*get_next_line(int fd)
 {
 	static char	str[BUFFER_SIZE + 1];
 	t_gnl_lst	*lst;
-	int			is_line;
 	int			bytes_read;
 	int			str_start_len;
 	int			i;
 
 	lst = (void *)0;
-	is_line = 0;
 	bytes_read = 1;
 	while (bytes_read > 0)
 	{
@@ -31,17 +29,17 @@ char	*get_next_line(int fd)
 			str_start_len = ft_strlen(str);
 			bytes_read = read(fd, str + ft_strlen(str), BUFFER_SIZE - str_start_len);
 			if (bytes_read == 0 || bytes_read < (BUFFER_SIZE - str_start_len))
-				return (ft_end_line(str, lst, bytes_read + str_start_len, &is_line));
+				return (ft_end_line(str, lst, bytes_read + str_start_len));
 			else if (!ft_check_new_line(str))
 			{
-				ft_gnl_lstadd_back(&lst, ft_strdup(str));
+				ft_gnl_lstadd_back(&lst, ft_strndup(str, ft_strlen(str)));
 				i = 0;
 				while (i <= BUFFER_SIZE)
 					str[i++] = '\0';
 			}
 		}
 		else
-			return (ft_get_line(str, lst, &is_line));
+			return (ft_get_line(str, lst));
 	}
 	return ((void *)0);
 }
@@ -63,7 +61,7 @@ size_t	ft_strlen(const char *s)
 Allocates sufficient memory for a copy of the string s1, does the copy, and
 returns a pointer to it. If insufficient memory is available, NULL is returned
 */
-char	*ft_strdup(const char *s1)
+char	*ft_strndup(const char *s1, int size)
 {
 	char	*dest;
 	int		i;
@@ -72,7 +70,7 @@ char	*ft_strdup(const char *s1)
 	if (!dest)
 		return ((void *)0);
 	i = 0;
-	while (s1[i])
+	while (s1[i] && i < size)
 	{
 		dest[i] = s1[i];
 		i++;
@@ -103,22 +101,20 @@ int	ft_check_new_line(char *str)
 Copy stash in str until the '\n' included. Add str as last element of lst.
 Replace stash with the part of stash behind the '\n'
 */
-char	*ft_get_line(char *stash, t_gnl_lst *lst, int *is_line)
+char	*ft_get_line(char *stash, t_gnl_lst *lst)
 {
 	int			i;
 	int			t;
 	char		*str;
 
-	*is_line = 1;
 	i = 0;
 	while (stash[i++] != '\n')
 		;
-	str = ft_substr(stash, 0, i);
+	str = ft_strndup(stash, i);
 	ft_gnl_lstadd_back(&lst, str);
 	t = 0;
 	while (stash[i])
 		stash[t++] = stash[i++];
-	while (t <= BUFFER_SIZE)
-		stash[t++] = '\0';
+	stash[t] = '\0';
 	return (ft_copy_new_line(lst));
 }
