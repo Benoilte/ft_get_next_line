@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/24 14:22:06 by bebrandt          #+#    #+#              #
-#    Updated: 2023/11/03 18:51:03 by bebrandt         ###   ########.fr        #
+#    Updated: 2023/11/06 11:35:20 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,9 @@ BUFFER_MACCRO = BUFFER_SIZE=
 BS =
 
 ifdef BS
-CFLAGS		=	-Wall -Wextra -Werror -D $(BUFFER_MACCRO)$(BS)
+CFLAGS		=	-Wall -Wextra -Werror -D $(BUFFER_MACCRO)$(BS) -g
 else
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g
 endif
 
 RM			=	rm -f
@@ -38,7 +38,7 @@ all: $(NAME)
 	$(CC) $(HDRS) $(CFLAGS) -c $< -o $@
 
 $(NAME):	$(OBJS)
-	$(CC) $(HDRS) $(CFLAGS) $(OBJS) -o $(NAME)  -fsanitize=address -g
+	$(CC) $(HDRS) $(CFLAGS) $(OBJS) -o $(NAME)  -fsanitize=address
 
 clean:
 	$(RM) $(OBJS)

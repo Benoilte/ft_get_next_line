@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 15:39:27 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:40:00 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,30 @@ char	*get_next_line(int fd)
 {
 	static char	str[BUFFER_SIZE + 1];
 	t_gnl_lst	*lst;
+	char		*new_line;
 	int			is_line;
 	int			bytes_read;
-	int			str_start_len;
-	int			i;
 
 	lst = (void *)0;
+	new_line = (void *)0;
 	is_line = 0;
-	bytes_read = 1;
-	while (bytes_read > 0)
+	if (!ft_check_new_line(str))
+		bytes_read = read(fd, str + ft_strlen(str), BUFFER_SIZE - ft_strlen(str));
+	// if (bytes_read == 0 || bytes_read < BUFFER_SIZE - (int)ft_strlen(str))
+	// 	new_line = ft_end_line(str, lst, bytes_read + ft_strlen(str), &is_line);
+	if (ft_check_new_line(str))
+		new_line = ft_get_line(str, lst, &is_line);
+	while (is_line == 0 && bytes_read > 0)
 	{
-		if (!ft_check_new_line(str))
-		{
-			str_start_len = ft_strlen(str);
-			bytes_read = read(fd, str + ft_strlen(str), BUFFER_SIZE - str_start_len);
-			if (bytes_read == 0 || bytes_read < (BUFFER_SIZE - str_start_len))
-				return (ft_end_line(str, lst, bytes_read + str_start_len, &is_line));
-			else if (!ft_check_new_line(str))
-			{
-				ft_gnl_lstadd_back(&lst, ft_strdup(str));
-				i = 0;
-				while (i <= BUFFER_SIZE)
-					str[i++] = '\0';
-			}
-		}
-		else
-			return (ft_get_line(str, lst, &is_line));
+		ft_gnl_lstadd_back(&lst, ft_strdup(str));
+		if (ft_check_new_line(str))
+			new_line = ft_get_line(str, lst, &is_line);
+		if (is_line == 0)
+			bytes_read = read(fd, str, BUFFER_SIZE);
+		// if (bytes_read == 0 || bytes_read < BUFFER_SIZE)
+		// 	new_line = ft_end_line(str, lst, bytes_read, &is_line);
 	}
-	return ((void *)0);
+	return (new_line);
 }
 
 /*
@@ -108,17 +104,20 @@ char	*ft_get_line(char *stash, t_gnl_lst *lst, int *is_line)
 	int			i;
 	int			t;
 	char		*str;
+	char		*new_line;
 
 	*is_line = 1;
 	i = 0;
 	while (stash[i++] != '\n')
 		;
 	str = ft_substr(stash, 0, i);
+	// printf("\033[31mend part of line: %s\033[0m", str);
 	ft_gnl_lstadd_back(&lst, str);
 	t = 0;
+	// printf("\033[31mchar: %c\033[0m", stash[i]);
 	while (stash[i])
 		stash[t++] = stash[i++];
-	while (t <= BUFFER_SIZE)
-		stash[t++] = '\0';
-	return (ft_copy_new_line(lst));
+	stash[t] = '\0';
+	new_line = ft_copy_new_line(lst);
+	return (new_line);
 }
