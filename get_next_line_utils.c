@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 15:23:11 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:08:47 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,39 +64,6 @@ void	ft_gnl_lstclear(t_gnl_lst **lst)
 }
 
 /*
-Allocate and return a new string from the string 's'.
-This new string starts at index 'start' and has a maximum size of 'len'.
-NULL is returned if the memory allocation failed.
-*/
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	unsigned int	i;
-	unsigned int	s_len;
-	char			*dest;
-
-	i = 0;
-	s_len = ft_strlen((char *)s);
-	if (!s_len || start > s_len - 1)
-		return (ft_strdup(""));
-	s += start;
-	s_len -= start;
-	if (len < s_len)
-	{
-		dest = (char *)malloc((len + 1) * sizeof(char));
-		if (!dest)
-			return ((void *)0);
-		while (s[i] && i < len)
-		{
-			dest[i] = s[i];
-			i++;
-		}
-		dest[i] = '\0';
-		return (dest);
-	}
-	return (ft_strdup(s));
-}
-
-/*
 Go through lst and concatenate all str member together.
 Return a new string corresponding to a new line.
 */
@@ -131,17 +98,16 @@ char	*ft_copy_new_line(t_gnl_lst *lst)
 }
 
 
-char	*ft_end_line(char *stash, t_gnl_lst *lst, int bytes, int *is_line)
+char	*ft_end_line(char *stash, t_gnl_lst *lst, int bytes)
 {
 	char		*str;
 
-	*is_line = 1;
 	if (ft_check_new_line(stash))
-		return (ft_get_line(stash, lst, is_line));
+		return (ft_get_line(stash, lst));
 	stash[bytes] = '\0';
 	if (bytes == 0)
 		return ((void *)0);
-	str = ft_strdup(stash);
+	str = ft_strndup(stash, ft_strlen(stash));
 	ft_gnl_lstadd_back(&lst, str);
 	stash[0] = '\0';
 	return (ft_copy_new_line(lst));
