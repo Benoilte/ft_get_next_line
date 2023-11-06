@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 16:09:37 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/06 23:33:17 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ char	*ft_strndup(const char *s1, int size)
 	char	*dest;
 	int		i;
 
-	dest = (char *)malloc((ft_strlen((char *)s1) + 1) * sizeof(char));
+	if ((size_t)size > ft_strlen(s1))
+		size = ft_strlen(s1);
+	dest = (char *)malloc((size + 1) * sizeof(char));
 	if (!dest)
 		return ((void *)0);
 	i = 0;
@@ -115,6 +117,7 @@ char	*ft_get_line(char *stash, t_gnl_lst *lst)
 	t = 0;
 	while (stash[i])
 		stash[t++] = stash[i++];
-	stash[t] = '\0';
+	while ((t < BUFFER_SIZE) && stash[t])
+		stash[t++] = '\0';
 	return (ft_copy_new_line(lst));
 }
