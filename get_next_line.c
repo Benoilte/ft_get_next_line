@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 17:20:51 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:25:26 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst)
 			buff_len = ft_strlen(buff);
 			if (buff_len > 0)
 			{
-				ft_gnl_lstadd_back(&lst, ft_strndup(buff, buff_len), buff_len);
+				ft_gnl_lstadd_back(&lst, ft_strndup(buff, buff_len));
 				buff[0] = '\0';
 			}
 			bytes_r = read(fd, buff, BUFFER_SIZE);
@@ -90,7 +90,7 @@ char	*ft_get_line(char *stash, t_gnl_lst *lst)
 		str = ft_strndup(stash, i);
 		if (!str)
 			return (ft_gnl_lstclear(&lst));
-		ft_gnl_lstadd_back(&lst, str, ft_strlen(str));
+		ft_gnl_lstadd_back(&lst, str);
 		t = 0;
 		while (stash[i])
 			stash[t++] = stash[i++];
@@ -113,37 +113,3 @@ char	*ft_copy_new_line(t_gnl_lst *lst)
 	ft_gnl_lstclear(&lst);
 	return (line);
 }
-
-/*
-Go through lst and concatenate all str member together.
-Return a new string corresponding to a new line.
-*/
-// char	*ft_copy_new_line(t_gnl_lst *lst)
-// {
-// 	size_t		len;
-// 	char		*str;
-// 	char		*new_line;
-// 	t_gnl_lst	*tmp;
-
-// 	tmp = lst;
-// 	len = 0;
-// 	while (tmp)
-// 	{
-// 		len += tmp->len;
-// 		tmp = tmp->next;
-// 	}
-// 	new_line = (char *)malloc(sizeof(char) * (len + 1));
-// 	if (!new_line)
-// 		return (ft_gnl_lstclear(&lst));
-// 	tmp = lst;
-// 	while (tmp)
-// 	{
-// 		str = tmp->str;
-// 		while (*str)
-// 			*new_line++ = *str++;
-// 		tmp = tmp->next;
-// 	}
-// 	*new_line = '\0';
-// 	ft_gnl_lstclear(&lst);
-// 	return (new_line - len);
-// }

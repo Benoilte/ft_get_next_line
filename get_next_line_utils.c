@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 17:14:06 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:25:00 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,8 @@ char	*ft_strndup(const char *s1, size_t size)
 Add new elem. at the end of the list and set new->next as null
 set new elem. as first elem. of the list if '*lst' is null.
 */
-void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, size_t length)
+void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 {
-	// t_gnl_lst	*last;
 	t_gnl_lst	*new;
 
 	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
@@ -64,7 +63,6 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, size_t length)
 		ft_gnl_lstclear(lst);
 		return ;
 	}
-	new->len = length;
 	new->next = (void *)0;
 	if (!*lst)
 		new->str = str;
@@ -75,15 +73,6 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, size_t length)
 		free(str);
 	}
 	*lst = new;
-	// if (!*lst)
-	// 	*lst = new;
-	// else
-	// {
-	// 	last = *lst;
-	// 	while (last->next)
-	// 		last = last->next;
-	// 	last->next = new;
-	// }
 }
 
 /*

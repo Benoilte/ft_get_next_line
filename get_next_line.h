@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:54:17 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 17:05:01 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:24:47 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 typedef struct s_gnl_lst
 {
 	char				*str;
-	int					len;
 	struct s_gnl_lst	*next;
 }	t_gnl_lst;
 
@@ -40,7 +39,7 @@ size_t		ft_strlen(const char *s);
 
 // gnl_lst function
 
-void		ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, size_t length);
+void		ft_gnl_lstadd_back(t_gnl_lst **lst, char *str);
 void		*ft_gnl_lstclear(t_gnl_lst **lst);
 
 #endif
