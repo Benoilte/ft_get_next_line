@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 16:08:47 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 09:49:34 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 /*
 Add new elem. at the end of the list and set new->next as null
@@ -22,15 +22,13 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 	t_gnl_lst	*new;
 
 	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
-	if (!new)
+	if (!new || !str || !lst)
 	{
 		ft_gnl_lstclear(lst);
 		return ;
 	}
 	new->str = str;
 	new->next = (void *)0;
-	if (!lst)
-		return ;
 	if (!*lst)
 		*lst = new;
 	else
@@ -83,7 +81,10 @@ char	*ft_copy_new_line(t_gnl_lst *lst)
 	}
 	new_line = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new_line)
+	{
+		ft_gnl_lstclear(&lst);
 		return ((void *)0);
+	}
 	tmp = lst;
 	while (tmp)
 	{
@@ -96,7 +97,6 @@ char	*ft_copy_new_line(t_gnl_lst *lst)
 	ft_gnl_lstclear(&lst);
 	return (new_line - len);
 }
-
 
 char	*ft_end_line(char *stash, t_gnl_lst *lst, int bytes)
 {
