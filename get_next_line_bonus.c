@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 14:03:28 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:03:30 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
 {
-	static char	buff[BUFFER_SIZE + 1];
+	static char	buff[4096][BUFFER_SIZE + 1];
 	t_gnl_lst	*lst;
 	int			bytes_r;
 
@@ -22,22 +22,22 @@ char	*get_next_line(int fd)
 	bytes_r = 1;
 	while (bytes_r > 0 && fd >= 0 && BUFFER_SIZE > 0)
 	{
-		if (!ft_check_new_line(buff))
+		if (!ft_check_new_line(buff[fd]))
 		{
-			if (ft_strlen(buff) > 0)
+			if (ft_strlen(buff[fd]) > 0)
 			{
-				ft_gnl_lstadd_back(&lst, ft_strndup(buff, ft_strlen(buff)));
-				buff[0] = '\0';
+				ft_gnl_lstadd_back(&lst, ft_strndup(buff[fd], ft_strlen(buff[fd])));
+				buff[fd][0] = '\0';
 			}
-			bytes_r = read(fd, buff, BUFFER_SIZE);
+			bytes_r = read(fd, buff[fd], BUFFER_SIZE);
 			if (bytes_r >= 0 && bytes_r < BUFFER_SIZE)
 			{
-				buff[bytes_r] = '\0';
-				return (ft_get_line(buff, lst));
+				buff[fd][bytes_r] = '\0';
+				return (ft_get_line(buff[fd], lst));
 			}
 		}
 		else
-			return (ft_get_line(buff, lst));
+			return (ft_get_line(buff[fd], lst));
 	}
 	if (lst)
 		ft_gnl_lstclear(&lst);

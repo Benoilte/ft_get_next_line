@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 23:35:15 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 13:36:41 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(void)
 	char	*file;
 	char	*new_line;
 
-	file = "text.txt";
+	file = "text1.txt";
 	fd = open(file, O_RDONLY);
 	i = 0;
 	if (fd > 0)
@@ -34,7 +34,7 @@ int	main(void)
 				free(new_line);
 			}
 			else
-				break;
+				break ;
 			i++;
 		}
 		close(fd);
