@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 15:33:22 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:14:06 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ size_t	ft_strlen(const char *s)
 Allocates sufficient memory for a copy of the string s1, does the copy, and
 returns a pointer to it. If insufficient memory is available, NULL is returned
 */
-char	*ft_strndup(const char *s1, int size)
+char	*ft_strndup(const char *s1, size_t size)
 {
-	char	*dest;
-	int		i;
+	char		*dest;
+	size_t		i;
 
-	if ((size_t)size > ft_strlen(s1))
+	if (size > ft_strlen(s1))
 		size = ft_strlen(s1);
 	dest = (char *)malloc((size + 1) * sizeof(char));
 	if (!dest)
@@ -53,9 +53,9 @@ char	*ft_strndup(const char *s1, int size)
 Add new elem. at the end of the list and set new->next as null
 set new elem. as first elem. of the list if '*lst' is null.
 */
-void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, int length)
+void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, size_t length)
 {
-	t_gnl_lst	*last;
+	// t_gnl_lst	*last;
 	t_gnl_lst	*new;
 
 	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
@@ -64,18 +64,26 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, int length)
 		ft_gnl_lstclear(lst);
 		return ;
 	}
-	new->str = str;
 	new->len = length;
 	new->next = (void *)0;
 	if (!*lst)
-		*lst = new;
+		new->str = str;
 	else
 	{
-		last = *lst;
-		while (last->next)
-			last = last->next;
-		last->next = new;
+		new->str = ft_strjoin((*lst)->str, str);
+		ft_gnl_lstclear(lst);
+		free(str);
 	}
+	*lst = new;
+	// if (!*lst)
+	// 	*lst = new;
+	// else
+	// {
+	// 	last = *lst;
+	// 	while (last->next)
+	// 		last = last->next;
+	// 	last->next = new;
+	// }
 }
 
 /*
@@ -98,4 +106,29 @@ void	*ft_gnl_lstclear(t_gnl_lst **lst)
 	free(*lst);
 	*lst = (void *)0;
 	return ((void *)0);
+}
+
+/*
+Allocate and returns a new string resulting from the concatenation 
+of s1 and s2. returns the new string; NULL if the memory allocation failed.
+*/
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*dest;
+	size_t	s1_len;
+	size_t	s2_len;
+	size_t	i;
+
+	s1_len = ft_strlen((s1));
+	s2_len = ft_strlen((s2));
+	dest = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+	if (!dest)
+		return ((void *)0);
+	i = 0;
+	while (*s1)
+		dest[i++] = *s1++;
+	while (*s2)
+		dest[i++] = *s2++;
+	dest[i] = '\0';
+	return (dest);
 }

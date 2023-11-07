@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 15:43:12 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:20:51 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ char	*get_next_line(int fd)
 
 char	*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst)
 {
-	int	bytes_r;
-	int	buff_len;
+	ssize_t	bytes_r;
+	size_t	buff_len;
 
 	bytes_r = 1;
 	while (bytes_r > 0 && fd >= 0 && BUFFER_SIZE > 0)
@@ -54,9 +54,9 @@ char	*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst)
 Locates if there is a '\n' in the string 'str'.
 Return 1 if yes, or NULL if there is no occurence
 */
-int	ft_check_new_line(char *str)
+size_t	ft_check_new_line(char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (str[i])
@@ -74,9 +74,9 @@ Replace stash with the part of stash behind the '\n'
 */
 char	*ft_get_line(char *stash, t_gnl_lst *lst)
 {
-	int			i;
-	int			t;
-	char		*str;
+	size_t			i;
+	size_t			t;
+	char			*str;
 
 	i = 0;
 	while (stash [i] && stash[i] != '\n')
@@ -105,30 +105,45 @@ Return a new string corresponding to a new line.
 */
 char	*ft_copy_new_line(t_gnl_lst *lst)
 {
-	int			len;
-	char		*str;
-	char		*new_line;
-	t_gnl_lst	*tmp;
+	char		*line;
 
-	tmp = lst;
-	len = 0;
-	while (tmp)
-	{
-		len += tmp->len;
-		tmp = tmp->next;
-	}
-	new_line = (char *)malloc(sizeof(char) * (len + 1));
-	if (!new_line)
+	line = ft_strndup(lst->str, ft_strlen(lst->str));
+	if (!line)
 		return (ft_gnl_lstclear(&lst));
-	tmp = lst;
-	while (tmp)
-	{
-		str = tmp->str;
-		while (*str)
-			*new_line++ = *str++;
-		tmp = tmp->next;
-	}
-	*new_line = '\0';
 	ft_gnl_lstclear(&lst);
-	return (new_line - len);
+	return (line);
 }
+
+/*
+Go through lst and concatenate all str member together.
+Return a new string corresponding to a new line.
+*/
+// char	*ft_copy_new_line(t_gnl_lst *lst)
+// {
+// 	size_t		len;
+// 	char		*str;
+// 	char		*new_line;
+// 	t_gnl_lst	*tmp;
+
+// 	tmp = lst;
+// 	len = 0;
+// 	while (tmp)
+// 	{
+// 		len += tmp->len;
+// 		tmp = tmp->next;
+// 	}
+// 	new_line = (char *)malloc(sizeof(char) * (len + 1));
+// 	if (!new_line)
+// 		return (ft_gnl_lstclear(&lst));
+// 	tmp = lst;
+// 	while (tmp)
+// 	{
+// 		str = tmp->str;
+// 		while (*str)
+// 			*new_line++ = *str++;
+// 		tmp = tmp->next;
+// 	}
+// 	*new_line = '\0';
+// 	ft_gnl_lstclear(&lst);
+// 	return (new_line - len);
+// }

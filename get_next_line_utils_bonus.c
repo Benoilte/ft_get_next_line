@@ -6,17 +6,54 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 13:38:06 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 16:23:01 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
 /*
+Returns number of characters that precede the terminating NULL character
+*/
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}
+
+/*
+Allocates sufficient memory for a copy of the string s1, does the copy, and
+returns a pointer to it. If insufficient memory is available, NULL is returned
+*/
+char	*ft_strndup(const char *s1, size_t size)
+{
+	char	*dest;
+	size_t	i;
+
+	if ((size_t)size > ft_strlen(s1))
+		size = ft_strlen(s1);
+	dest = (char *)malloc((size + 1) * sizeof(char));
+	if (!dest)
+		return ((void *)0);
+	i = 0;
+	while (s1[i] && i < size)
+	{
+		dest[i] = s1[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+/*
 Add new elem. at the end of the list and set new->next as null
 set new elem. as first elem. of the list if '*lst' is null.
 */
-void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
+void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str, size_t length)
 {
 	t_gnl_lst	*last;
 	t_gnl_lst	*new;
@@ -28,6 +65,7 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 		return ;
 	}
 	new->str = str;
+	new->len = length;
 	new->next = (void *)0;
 	if (!*lst)
 		*lst = new;
@@ -44,12 +82,12 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 Deletes and free the memory of the element passed as parameter
 and all the following elements
 */
-void	ft_gnl_lstclear(t_gnl_lst **lst)
+void	*ft_gnl_lstclear(t_gnl_lst **lst)
 {
 	t_gnl_lst	*next_el;
 
 	if (!lst)
-		return ;
+		return ((void *)0);
 	while (*lst)
 	{
 		next_el = (*lst)->next;
@@ -59,41 +97,5 @@ void	ft_gnl_lstclear(t_gnl_lst **lst)
 	}
 	free(*lst);
 	*lst = (void *)0;
-}
-
-/*
-Go through lst and concatenate all str member together.
-Return a new string corresponding to a new line.
-*/
-char	*ft_copy_new_line(t_gnl_lst *lst)
-{
-	int			len;
-	char		*str;
-	char		*new_line;
-	t_gnl_lst	*tmp;
-
-	tmp = lst;
-	len = 0;
-	while (tmp)
-	{
-		len += ft_strlen(tmp->str);
-		tmp = tmp->next;
-	}
-	new_line = (char *)malloc(sizeof(char) * (len + 1));
-	if (!new_line)
-	{
-		ft_gnl_lstclear(&lst);
-		return ((void *)0);
-	}
-	tmp = lst;
-	while (tmp)
-	{
-		str = tmp->str;
-		while (*str)
-			*new_line++ = *str++;
-		tmp = tmp->next;
-	}
-	*new_line = '\0';
-	ft_gnl_lstclear(&lst);
-	return (new_line - len);
+	return ((void *)0);
 }
