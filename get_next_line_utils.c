@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 09:53:38 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 13:33:49 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,25 +96,4 @@ char	*ft_copy_new_line(t_gnl_lst *lst)
 	*new_line = '\0';
 	ft_gnl_lstclear(&lst);
 	return (new_line - len);
-}
-
-
-char	*ft_end_line(char *stash, t_gnl_lst *lst, int bytes)
-{
-	char		*str;
-
-	if (ft_check_new_line(stash))
-		return (ft_get_line(stash, lst));
-	stash[bytes] = '\0';
-	if (bytes == 0)
-		return ((void *)0);
-	str = ft_strndup(stash, ft_strlen(stash));
-	if (!str)
-	{
-		ft_gnl_lstclear(&lst);
-		return ((void *)0);
-	}
-	ft_gnl_lstadd_back(&lst, str);
-	stash[0] = '\0';
-	return (ft_copy_new_line(lst));
 }

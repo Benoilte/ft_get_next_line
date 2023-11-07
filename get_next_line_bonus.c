@@ -1,45 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/05 17:40:00 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:03:30 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
 {
-	static char	str[BUFFER_SIZE + 1];
+	static char	buff[4096][BUFFER_SIZE + 1];
 	t_gnl_lst	*lst;
-	char		*new_line;
-	int			is_line;
-	int			bytes_read;
+	int			bytes_r;
 
 	lst = (void *)0;
-	new_line = (void *)0;
-	is_line = 0;
-	if (!ft_check_new_line(str))
-		bytes_read = read(fd, str + ft_strlen(str), BUFFER_SIZE - ft_strlen(str));
-	// if (bytes_read == 0 || bytes_read < BUFFER_SIZE - (int)ft_strlen(str))
-	// 	new_line = ft_end_line(str, lst, bytes_read + ft_strlen(str), &is_line);
-	if (ft_check_new_line(str))
-		new_line = ft_get_line(str, lst, &is_line);
-	while (is_line == 0 && bytes_read > 0)
+	bytes_r = 1;
+	while (bytes_r > 0 && fd >= 0 && BUFFER_SIZE > 0)
 	{
-		ft_gnl_lstadd_back(&lst, ft_strdup(str));
-		if (ft_check_new_line(str))
-			new_line = ft_get_line(str, lst, &is_line);
-		if (is_line == 0)
-			bytes_read = read(fd, str, BUFFER_SIZE);
-		// if (bytes_read == 0 || bytes_read < BUFFER_SIZE)
-		// 	new_line = ft_end_line(str, lst, bytes_read, &is_line);
+		if (!ft_check_new_line(buff[fd]))
+		{
+			if (ft_strlen(buff[fd]) > 0)
+			{
+				ft_gnl_lstadd_back(&lst, ft_strndup(buff[fd], ft_strlen(buff[fd])));
+				buff[fd][0] = '\0';
+			}
+			bytes_r = read(fd, buff[fd], BUFFER_SIZE);
+			if (bytes_r >= 0 && bytes_r < BUFFER_SIZE)
+			{
+				buff[fd][bytes_r] = '\0';
+				return (ft_get_line(buff[fd], lst));
+			}
+		}
+		else
+			return (ft_get_line(buff[fd], lst));
 	}
-	return (new_line);
+	if (lst)
+		ft_gnl_lstclear(&lst);
+	return ((void *)0);
 }
 
 /*
@@ -59,16 +61,18 @@ size_t	ft_strlen(const char *s)
 Allocates sufficient memory for a copy of the string s1, does the copy, and
 returns a pointer to it. If insufficient memory is available, NULL is returned
 */
-char	*ft_strdup(const char *s1)
+char	*ft_strndup(const char *s1, int size)
 {
 	char	*dest;
 	int		i;
 
-	dest = (char *)malloc((ft_strlen((char *)s1) + 1) * sizeof(char));
+	if ((size_t)size > ft_strlen(s1))
+		size = ft_strlen(s1);
+	dest = (char *)malloc((size + 1) * sizeof(char));
 	if (!dest)
 		return ((void *)0);
 	i = 0;
-	while (s1[i])
+	while (s1[i] && i < size)
 	{
 		dest[i] = s1[i];
 		i++;
@@ -99,25 +103,29 @@ int	ft_check_new_line(char *str)
 Copy stash in str until the '\n' included. Add str as last element of lst.
 Replace stash with the part of stash behind the '\n'
 */
-char	*ft_get_line(char *stash, t_gnl_lst *lst, int *is_line)
+char	*ft_get_line(char *stash, t_gnl_lst *lst)
 {
 	int			i;
 	int			t;
 	char		*str;
-	char		*new_line;
 
-	*is_line = 1;
 	i = 0;
-	while (stash[i++] != '\n')
-		;
-	str = ft_substr(stash, 0, i);
-	// printf("\033[31mend part of line: %s\033[0m", str);
-	ft_gnl_lstadd_back(&lst, str);
-	t = 0;
-	// printf("\033[31mchar: %c\033[0m", stash[i]);
-	while (stash[i])
-		stash[t++] = stash[i++];
-	stash[t] = '\0';
-	new_line = ft_copy_new_line(lst);
-	return (new_line);
+	while (stash [i] && stash[i] != '\n')
+		i++;
+	if (stash[i] == '\n')
+		i++;
+	if (!i && !lst)
+		return ((void *)0);
+	if (i)
+	{
+		str = ft_strndup(stash, i);
+		if (!str)
+			ft_gnl_lstclear(&lst);
+		ft_gnl_lstadd_back(&lst, str);
+		t = 0;
+		while (stash[i])
+			stash[t++] = stash[i++];
+		stash[t] = '\0';
+	}
+	return (ft_copy_new_line(lst));
 }

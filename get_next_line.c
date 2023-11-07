@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 09:42:45 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:03:28 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,30 @@
 
 char	*get_next_line(int fd)
 {
-	static char	str[BUFFER_SIZE + 1];
+	static char	buff[BUFFER_SIZE + 1];
 	t_gnl_lst	*lst;
-	int			bytes_read;
-	int			str_start_len;
-	int			i;
+	int			bytes_r;
 
 	lst = (void *)0;
-	bytes_read = 1;
-	while (bytes_read > 0 && fd > 0 && BUFFER_SIZE > 0)
+	bytes_r = 1;
+	while (bytes_r > 0 && fd >= 0 && BUFFER_SIZE > 0)
 	{
-		if (!ft_check_new_line(str))
+		if (!ft_check_new_line(buff))
 		{
-			str_start_len = ft_strlen(str);
-			bytes_read = read(fd, str + ft_strlen(str), BUFFER_SIZE - str_start_len);
-			if (bytes_read == 0 || bytes_read < (BUFFER_SIZE - str_start_len))
-				return (ft_end_line(str, lst, bytes_read + str_start_len));
-			else if (!ft_check_new_line(str))
+			if (ft_strlen(buff) > 0)
 			{
-				ft_gnl_lstadd_back(&lst, ft_strndup(str, ft_strlen(str)));
-				i = 0;
-				while (i <= BUFFER_SIZE)
-					str[i++] = '\0';
+				ft_gnl_lstadd_back(&lst, ft_strndup(buff, ft_strlen(buff)));
+				buff[0] = '\0';
+			}
+			bytes_r = read(fd, buff, BUFFER_SIZE);
+			if (bytes_r >= 0 && bytes_r < BUFFER_SIZE)
+			{
+				buff[bytes_r] = '\0';
+				return (ft_get_line(buff, lst));
 			}
 		}
 		else
-			return (ft_get_line(str, lst));
+			return (ft_get_line(buff, lst));
 	}
 	if (lst)
 		ft_gnl_lstclear(&lst);
@@ -112,16 +110,22 @@ char	*ft_get_line(char *stash, t_gnl_lst *lst)
 	char		*str;
 
 	i = 0;
-	while (stash[i++] != '\n')
-		;
-	str = ft_strndup(stash, i);
-	if (!str)
-		ft_gnl_lstclear(&lst);
-	ft_gnl_lstadd_back(&lst, str);
-	t = 0;
-	while (stash[i])
-		stash[t++] = stash[i++];
-	while ((t < BUFFER_SIZE) && stash[t])
-		stash[t++] = '\0';
+	while (stash [i] && stash[i] != '\n')
+		i++;
+	if (stash[i] == '\n')
+		i++;
+	if (!i && !lst)
+		return ((void *)0);
+	if (i)
+	{
+		str = ft_strndup(stash, i);
+		if (!str)
+			ft_gnl_lstclear(&lst);
+		ft_gnl_lstadd_back(&lst, str);
+		t = 0;
+		while (stash[i])
+			stash[t++] = stash[i++];
+		stash[t] = '\0';
+	}
 	return (ft_copy_new_line(lst));
 }

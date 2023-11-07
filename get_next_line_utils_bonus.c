@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 18:37:50 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 13:38:06 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,13 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 	t_gnl_lst	*new;
 
 	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
-	if (!new)
+	if (!new || !str || !lst)
 	{
 		ft_gnl_lstclear(lst);
 		return ;
 	}
 	new->str = str;
 	new->next = (void *)0;
-	if (!lst)
-		return ;
 	if (!*lst)
 		*lst = new;
 	else
@@ -83,7 +81,10 @@ char	*ft_copy_new_line(t_gnl_lst *lst)
 	}
 	new_line = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new_line)
+	{
+		ft_gnl_lstclear(&lst);
 		return ((void *)0);
+	}
 	tmp = lst;
 	while (tmp)
 	{
@@ -95,20 +96,4 @@ char	*ft_copy_new_line(t_gnl_lst *lst)
 	*new_line = '\0';
 	ft_gnl_lstclear(&lst);
 	return (new_line - len);
-}
-
-
-char	*ft_end_line(char *stash, t_gnl_lst *lst, int bytes)
-{
-	char		*str;
-
-	if (ft_check_new_line(stash))
-		return (ft_get_line(stash, lst));
-	stash[bytes] = '\0';
-	if (bytes == 0)
-		return ((void *)0);
-	str = ft_strndup(stash, ft_strlen(stash));
-	ft_gnl_lstadd_back(&lst, str);
-	stash[0] = '\0';
-	return (ft_copy_new_line(lst));
 }
