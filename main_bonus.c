@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 21:17:10 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 09:38:30 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(void)
 				free(new_line);
 			}
 			else
-				break;
+				break ;
 			i++;
 		}
 		close(fd_even);

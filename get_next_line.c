@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/06 23:33:17 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 09:42:45 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_next_line(int fd)
 
 	lst = (void *)0;
 	bytes_read = 1;
-	while (bytes_read > 0)
+	while (bytes_read > 0 && fd > 0 && BUFFER_SIZE > 0)
 	{
 		if (!ft_check_new_line(str))
 		{
@@ -41,6 +41,8 @@ char	*get_next_line(int fd)
 		else
 			return (ft_get_line(str, lst));
 	}
+	if (lst)
+		ft_gnl_lstclear(&lst);
 	return ((void *)0);
 }
 
@@ -113,6 +115,8 @@ char	*ft_get_line(char *stash, t_gnl_lst *lst)
 	while (stash[i++] != '\n')
 		;
 	str = ft_strndup(stash, i);
+	if (!str)
+		ft_gnl_lstclear(&lst);
 	ft_gnl_lstadd_back(&lst, str);
 	t = 0;
 	while (stash[i])
