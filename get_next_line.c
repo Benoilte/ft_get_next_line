@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 17:25:26 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:45:23 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ char	*get_next_line(int fd)
 	static char	buff[BUFFER_SIZE + 1];
 	t_gnl_lst	*lst;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return ((void *)0);
 	lst = (void *)0;
 	return (ft_read_and_check_line(fd, buff, lst));
 }
 
 char	*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst)
 {
-	ssize_t	bytes_r;
+	int		bytes_r;
 	size_t	buff_len;
 
 	bytes_r = 1;

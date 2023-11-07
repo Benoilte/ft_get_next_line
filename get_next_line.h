@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:54:17 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 17:24:47 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:45:53 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char		*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst);
 char		*ft_get_line(char *stash, t_gnl_lst *lst);
 char		*ft_copy_new_line(t_gnl_lst *lst);
 char		*ft_strndup(const char *s1, size_t size);
-char		*ft_strjoin(char const *s1, char const *s2);
+char		*ft_strjoin(char *s1, char *s2);
 size_t		ft_check_new_line(char *str);
 size_t		ft_strlen(const char *s);
 

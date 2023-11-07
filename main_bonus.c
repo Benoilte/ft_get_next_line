@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 09:38:30 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:07:21 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int	main(void)
 	char	*file_odd;
 	char	*new_line;
 
-	file_even = "even.txt";
-	file_odd = "odd.txt";
+	file_even = "text1.txt";
+	file_odd = "text2.txt";
 	fd_even = open(file_even, O_RDONLY);
 	fd_odd = open(file_odd, O_RDONLY);
 	i = 0;
 	if (fd_even > 0)
 	{
-		while (i != 60)
+		while (i != 20000)
 		{
 			new_line = get_next_line(fd_even);
 			// printf("\033[31mfd_even: %d\033[0m\n", fd_even);
@@ -38,7 +38,7 @@ int	main(void)
 				printf("%s", new_line);
 				free(new_line);
 			}
-			new_line = get_next_line(fd_odd);
+			new_line = get_next_line(1);
 			// printf("\033[32mfd_odd: %d\033[0m\n", fd_odd);
 			if (new_line)
 			{

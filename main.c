@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 14:35:29 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:08:21 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int	main(void)
 	char	*file;
 	char	*new_line;
 
-	file = "text.txt";
+	file = "text1.txt";
 	fd = open(file, O_RDONLY);
 	i = 0;
 	if (fd > 0)
 	{
 		while (i != 60)
 		{
-			new_line = get_next_line(fd);
+			new_line = get_next_line(0);
 			if (new_line)
 			{
 				printf("\nget_next_line: %d \n", i + 1);
