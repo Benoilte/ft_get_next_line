@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 14:03:28 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:40:34 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,25 @@ char	*get_next_line(int fd)
 {
 	static char	buff[BUFFER_SIZE + 1];
 	t_gnl_lst	*lst;
-	int			bytes_r;
 
 	lst = (void *)0;
+	return (ft_read_and_check_line(fd, buff, lst));
+}
+
+char	*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst)
+{
+	int	bytes_r;
+	int	buff_len;
+
 	bytes_r = 1;
 	while (bytes_r > 0 && fd >= 0 && BUFFER_SIZE > 0)
 	{
 		if (!ft_check_new_line(buff))
 		{
-			if (ft_strlen(buff) > 0)
+			buff_len = ft_strlen(buff);
+			if (buff_len > 0)
 			{
-				ft_gnl_lstadd_back(&lst, ft_strndup(buff, ft_strlen(buff)));
+				ft_gnl_lstadd_back(&lst, ft_strndup(buff, buff_len), buff_len);
 				buff[0] = '\0';
 			}
 			bytes_r = read(fd, buff, BUFFER_SIZE);
@@ -42,43 +50,6 @@ char	*get_next_line(int fd)
 	if (lst)
 		ft_gnl_lstclear(&lst);
 	return ((void *)0);
-}
-
-/*
-Returns number of characters that precede the terminating NULL character
-*/
-size_t	ft_strlen(const char *s)
-{
-	size_t	len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
-}
-
-/*
-Allocates sufficient memory for a copy of the string s1, does the copy, and
-returns a pointer to it. If insufficient memory is available, NULL is returned
-*/
-char	*ft_strndup(const char *s1, int size)
-{
-	char	*dest;
-	int		i;
-
-	if ((size_t)size > ft_strlen(s1))
-		size = ft_strlen(s1);
-	dest = (char *)malloc((size + 1) * sizeof(char));
-	if (!dest)
-		return ((void *)0);
-	i = 0;
-	while (s1[i] && i < size)
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
 }
 
 /*
@@ -120,12 +91,46 @@ char	*ft_get_line(char *stash, t_gnl_lst *lst)
 	{
 		str = ft_strndup(stash, i);
 		if (!str)
-			ft_gnl_lstclear(&lst);
-		ft_gnl_lstadd_back(&lst, str);
+			return (ft_gnl_lstclear(&lst));
+		ft_gnl_lstadd_back(&lst, str, ft_strlen(str));
 		t = 0;
 		while (stash[i])
 			stash[t++] = stash[i++];
 		stash[t] = '\0';
 	}
 	return (ft_copy_new_line(lst));
+}
+
+/*
+Go through lst and concatenate all str member together.
+Return a new string corresponding to a new line.
+*/
+char	*ft_copy_new_line(t_gnl_lst *lst)
+{
+	int			len;
+	char		*str;
+	char		*new_line;
+	t_gnl_lst	*tmp;
+
+	tmp = lst;
+	len = 0;
+	while (tmp)
+	{
+		len += tmp->len;
+		tmp = tmp->next;
+	}
+	new_line = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new_line)
+		return (ft_gnl_lstclear(&lst));
+	tmp = lst;
+	while (tmp)
+	{
+		str = tmp->str;
+		while (*str)
+			*new_line++ = *str++;
+		tmp = tmp->next;
+	}
+	*new_line = '\0';
+	ft_gnl_lstclear(&lst);
+	return (new_line - len);
 }
