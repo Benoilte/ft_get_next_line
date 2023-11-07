@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 15:40:34 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:43:12 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ char	*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst)
 		else
 			return (ft_get_line(buff, lst));
 	}
-	if (lst)
-		ft_gnl_lstclear(&lst);
-	return ((void *)0);
+	return (ft_gnl_lstclear(&lst));
 }
 
 /*
