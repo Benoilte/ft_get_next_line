@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 18:45:23 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 22:26:41 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,24 @@ char	*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst)
 	int		bytes_r;
 	size_t	buff_len;
 
-	bytes_r = 1;
-	while (bytes_r > 0 && fd >= 0 && BUFFER_SIZE > 0)
+	while (!ft_check_new_line(buff))
 	{
-		if (!ft_check_new_line(buff))
+		buff_len = ft_strlen(buff);
+		if (buff_len > 0)
 		{
-			buff_len = ft_strlen(buff);
-			if (buff_len > 0)
-			{
-				ft_gnl_lstadd_back(&lst, ft_strndup(buff, buff_len));
-				buff[0] = '\0';
-			}
-			bytes_r = read(fd, buff, BUFFER_SIZE);
-			if (bytes_r >= 0 && bytes_r < BUFFER_SIZE)
-			{
-				buff[bytes_r] = '\0';
-				return (ft_get_line(buff, lst));
-			}
+			ft_gnl_lstadd_back(&lst, ft_strndup(buff, buff_len));
+			buff[0] = '\0';
 		}
-		else
+		bytes_r = read(fd, buff, BUFFER_SIZE);
+		if (bytes_r < 0)
+			return (ft_gnl_lstclear(&lst));
+		if (bytes_r >= 0 && bytes_r < BUFFER_SIZE)
+		{
+			buff[bytes_r] = '\0';
 			return (ft_get_line(buff, lst));
+		}
 	}
-	return (ft_gnl_lstclear(&lst));
+	return (ft_get_line(buff, lst));
 }
 
 /*
