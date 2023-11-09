@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 18:07:21 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/07 22:08:24 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,90 @@
 
 int	main(void)
 {
-	int		fd_even;
-	int		fd_odd;
-	int		i;
-	char	*file_even;
-	char	*file_odd;
-	char	*new_line;
+	// int		fd_1;
+	// int		fd_2;
+	// int		fd_3;
+	// int		fd_4;
+	// int		i;
+	char	*file_1;
+	char	*file_2;
+	char	*file_3;
+	char	*file_4;
+	// char	*new_line;
 
-	file_even = "text1.txt";
-	file_odd = "text2.txt";
-	fd_even = open(file_even, O_RDONLY);
-	fd_odd = open(file_odd, O_RDONLY);
-	i = 0;
-	if (fd_even > 0)
-	{
-		while (i != 20000)
-		{
-			new_line = get_next_line(fd_even);
-			// printf("\033[31mfd_even: %d\033[0m\n", fd_even);
-			if (new_line)
-			{
-				printf("\neven_gnl: %d \n", i + 1);
-				printf("%s", new_line);
-				free(new_line);
-			}
-			new_line = get_next_line(1);
-			// printf("\033[32mfd_odd: %d\033[0m\n", fd_odd);
-			if (new_line)
-			{
-				printf("\nodd_gnl: %d \n", i + 1);
-				printf("%s", new_line);
-				free(new_line);
-			}
-			else
-				break ;
-			i++;
-		}
-		close(fd_even);
-		close(fd_odd);
-	}
-	else
-		printf("error to open %s or %s file\n", file_even, file_odd);
-	return (0);
+	file_1 = "text1.txt";
+	file_2 = "text2.txt";
+	file_3 = "text3.txt";
+	file_4 = "text4.txt";
+	// fd_1 = open(file_1, O_RDONLY);
+	// fd_2 = open(file_2, O_RDONLY);
+	// fd_3 = open(file_3, O_RDONLY);
+	// fd_4 = open(file_4, O_RDONLY);
+	// i = 0;
+	// if (fd_1 > 0 && fd_2 > 0 && fd_3 > 0 && fd_4 > 0)
+	// {
+			// new_line = get_next_line(fd_1);
+			// if (new_line)
+			// {
+			// 	printf("\nfd_1: %d \n", i + 1);
+			// 	printf("%s", new_line);
+			// 	free(new_line);
+			// }
+			// new_line = get_next_line(fd_2);
+			// if (new_line)
+			// {
+			// 	printf("\nfd_2: %d \n", i + 1);
+			// 	printf("%s", new_line);
+			// 	free(new_line);
+			// }
+			// new_line = get_next_line(fd_3);
+			// if (new_line)
+			// {
+			// 	printf("\nfd_3: %d \n", i + 1);
+			// 	printf("%s", new_line);
+			// 	free(new_line);
+			// }
+			// new_line = get_next_line(fd_4);
+			// if (new_line)
+			// {
+			// 	printf("\nfd_4: %d \n", i + 1);
+			// 	printf("%s", new_line);
+			// 	free(new_line);
+			// }
+	int fd_1 = open(file_1, O_RDONLY);
+	int fd_2 = open(file_2, O_RDONLY);
+	int fd_3 = open(file_3, O_RDONLY);
+	/* 1 */ printf("%s", get_next_line(fd_1));
+	/* 2 */ printf("%s", get_next_line(fd_2));
+	/* 3 */ printf("%s", get_next_line(fd_3));
+	/* 4 */ printf("%s", get_next_line(fd_1));
+	/* 5 */ printf("%s", get_next_line(fd_2));
+	/* 6 */ printf("%s", get_next_line(fd_2));
+	int fd_4 = open(file_4, O_RDONLY);
+	/* 7 */ printf("%s", get_next_line(fd_2));
+	/* 8 */ printf("%s", get_next_line(fd_3));
+	/* 9 */ printf("%s", get_next_line(fd_4));
+	/* 10 */ printf("%s", get_next_line(fd_2));
+	/* 11 */ printf("%s", get_next_line(fd_2));
+	/* 12 */ printf("%s", get_next_line(fd_1));
+	/* 13 */ printf("%s", get_next_line(fd_4));
+	/* 14 */ printf("%s", get_next_line(fd_1));
+	/* 15 */ printf("%s", get_next_line(fd_4));
+	/* 16 */ printf("%s", get_next_line(fd_1));
+	/* 17 */ printf("%s", get_next_line(fd_4));
+	/* 18 */ printf("%s", get_next_line(fd_3));
+	/* 19 */ printf("%s", get_next_line(fd_3));
+	/* 20 */ printf("%s", get_next_line(fd_1));
+	/* 21 */ printf("%s", get_next_line(fd_3));
+	/* 22 */ printf("%s", get_next_line(fd_3));
+	close(fd_1);
+	close(fd_2);
+	close(fd_3);
+	close(fd_4);
+	// }
+	// else
+	// 	printf("error to open %s or %s file\n", file_1, file_2);
+	// return (0);
 }
 
 // int	main(void)
