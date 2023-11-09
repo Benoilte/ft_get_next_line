@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/09 11:42:49 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/09 14:38:33 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,34 +26,9 @@ size_t	ft_strlen(const char *s)
 }
 
 /*
-Allocates sufficient memory for a copy of the string s1, does the copy, and
-returns a pointer to it. If insufficient memory is available, NULL is returned
-*/
-char	*ft_strndup(const char *s1, size_t size)
-{
-	char		*dest;
-	size_t		i;
-
-	if (size == 0 || ft_strlen(s1) == 0)
-		return ((void *)0);
-	if (size > ft_strlen(s1))
-		size = ft_strlen(s1);
-	dest = (char *)malloc((size + 1) * sizeof(char));
-	if (!dest)
-		return ((void *)0);
-	i = 0;
-	while (s1[i] && i < size)
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-/*
-Add new elem. at the end of the list and set new->next as null
-set new elem. as first elem. of the list if '*lst' is null.
+Add new elem. at the end of the list.
+set new elem. as first elem. of the list if *lst is null.
+Set new->next as null and new->str = str
 */
 void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 {
@@ -62,16 +37,14 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 
 	if (!lst)
 	{
-		ft_safe_free(lst, str);
 		return ;
 	}
 	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
 	if (!new)
 	{
-		ft_safe_free(lst, str);
 		return ;
 	}
-	new->str = str;
+	ft_strlcpy(new->str, str, ft_strlen(str) + 1);
 	new->next = (void *)0;
 	if (!*lst)
 		*lst = new;
@@ -88,18 +61,15 @@ void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 Deletes and free the memory of the element passed as parameter
 and all the following elements
 */
-void	*ft_safe_free(t_gnl_lst **lst, char *str)
+void	*ft_gnl_lstclear(t_gnl_lst **lst)
 {
 	t_gnl_lst	*next_el;
 
-	if (str)
-		free(str);
 	if (!lst)
 		return ((void *)0);
 	while (*lst)
 	{
 		next_el = (*lst)->next;
-		free((*lst)->str);
 		free(*lst);
 		*lst = next_el;
 	}
@@ -108,6 +78,9 @@ void	*ft_safe_free(t_gnl_lst **lst, char *str)
 	return ((void *)0);
 }
 
+/*
+Return the sum of all str member length.
+*/
 int	ft_count_line_chars(t_gnl_lst *lst)
 {
 	int			len;
@@ -122,5 +95,31 @@ int	ft_count_line_chars(t_gnl_lst *lst)
 		len += ft_strlen(tmp->str);
 		tmp = tmp->next;
 	}
+	return (len);
+}
+
+/*
+copies up to dstsize - 1 characters from the string src to dst.
+return the total length of the strings it tried to create.
+If the return value is >= dstsize, the output string has been truncated.
+*/
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+{
+	long unsigned int	i;
+	long unsigned int	len;
+
+	i = 0;
+	if (size)
+	{
+		while (src[i] && (size - 1) != i)
+		{
+			dest[i] = src[i];
+			i++;
+		}
+		dest[i] = '\0';
+	}
+	len = 0;
+	while (src[len])
+		len++;
 	return (len);
 }
