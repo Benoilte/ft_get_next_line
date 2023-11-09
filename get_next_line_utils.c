@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/09 11:42:04 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:10:01 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ returns a pointer to it. If insufficient memory is available, NULL is returned
 */
 char	*ft_strndup(const char *s1, size_t size)
 {
-	char		*dest;
-	size_t		i;
+	char	*dest;
+	int		len;
+	size_t	i;
 
-	if (size == 0 || ft_strlen(s1) == 0)
+	len = ft_strlen(s1);
+	if (size == 0 || len == 0)
 		return ((void *)0);
-	if (size > ft_strlen(s1))
-		size = ft_strlen(s1);
+	if (size > len)
+		size = len;
 	dest = (char *)malloc((size + 1) * sizeof(char));
 	if (!dest)
 		return ((void *)0);
