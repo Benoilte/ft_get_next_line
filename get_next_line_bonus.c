@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 22:26:33 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/09 11:31:56 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,22 @@ char	*ft_read_and_check_line(int fd, char *buff, t_gnl_lst *lst)
 {
 	int		bytes_r;
 	size_t	buff_len;
+	char	*str;
 
 	while (!ft_check_new_line(buff))
 	{
 		buff_len = ft_strlen(buff);
 		if (buff_len > 0)
 		{
-			ft_gnl_lstadd_back(&lst, ft_strndup(buff, buff_len));
+			str = ft_strndup(buff, buff_len);
+			if (!str)
+				return (ft_safe_free(&lst, (void *)0));
+			ft_gnl_lstadd_back(&lst, str);
 			buff[0] = '\0';
 		}
 		bytes_r = read(fd, buff, BUFFER_SIZE);
 		if (bytes_r < 0)
-			return (ft_gnl_lstclear(&lst));
+			return (ft_safe_free(&lst, (void *)0));
 		if (bytes_r >= 0 && bytes_r < BUFFER_SIZE)
 		{
 			buff[bytes_r] = '\0';
@@ -87,27 +91,42 @@ char	*ft_get_line(char *stash, t_gnl_lst *lst)
 	{
 		str = ft_strndup(stash, i);
 		if (!str)
-			return (ft_gnl_lstclear(&lst));
+			return (ft_safe_free(&lst, (void *)0));
 		ft_gnl_lstadd_back(&lst, str);
 		t = 0;
 		while (stash[i])
 			stash[t++] = stash[i++];
 		stash[t] = '\0';
 	}
-	return (ft_copy_new_line(lst));
+	return (ft_copy_line(lst));
 }
 
 /*
 Go through lst and concatenate all str member together.
 Return a new string corresponding to a new line.
 */
-char	*ft_copy_new_line(t_gnl_lst *lst)
+char	*ft_copy_line(t_gnl_lst *lst)
 {
+	int			len;
+	int			i;
+	int			k;
 	char		*line;
+	t_gnl_lst	*tmp;
 
-	line = ft_strndup(lst->str, ft_strlen(lst->str));
+	len = ft_count_line_chars(lst);
+	line = (char *)malloc(sizeof(char) * (len + 1));
 	if (!line)
-		return (ft_gnl_lstclear(&lst));
-	ft_gnl_lstclear(&lst);
+		return (ft_safe_free(&lst, (void *)0));
+	tmp = lst;
+	i = 0;
+	while (tmp)
+	{
+		k = 0;
+		while (tmp->str[k])
+			line[i++] = tmp->str[k++];
+		tmp = tmp->next;
+	}
+	line[i] = '\0';
+	ft_safe_free(&lst, (void *)0);
 	return (line);
 }

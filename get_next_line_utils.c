@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:57:30 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/07 18:54:34 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/09 11:42:04 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*ft_strndup(const char *s1, size_t size)
 	char		*dest;
 	size_t		i;
 
+	if (size == 0 || ft_strlen(s1) == 0)
+		return ((void *)0);
 	if (size > ft_strlen(s1))
 		size = ft_strlen(s1);
 	dest = (char *)malloc((size + 1) * sizeof(char));
@@ -55,34 +57,43 @@ set new elem. as first elem. of the list if '*lst' is null.
 */
 void	ft_gnl_lstadd_back(t_gnl_lst **lst, char *str)
 {
+	t_gnl_lst	*last;
 	t_gnl_lst	*new;
 
-	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
-	if (!new || !str || !lst)
+	if (!lst)
 	{
-		ft_gnl_lstclear(lst);
+		ft_safe_free(lst, str);
 		return ;
 	}
+	new = (t_gnl_lst *)malloc(sizeof(t_gnl_lst));
+	if (!new)
+	{
+		ft_safe_free(lst, str);
+		return ;
+	}
+	new->str = str;
 	new->next = (void *)0;
 	if (!*lst)
-		new->str = str;
+		*lst = new;
 	else
 	{
-		new->str = ft_strjoin((*lst)->str, str);
-		ft_gnl_lstclear(lst);
-		free(str);
+		last = *lst;
+		while (last->next)
+			last = last->next;
+		last->next = new;
 	}
-	*lst = new;
 }
 
 /*
 Deletes and free the memory of the element passed as parameter
 and all the following elements
 */
-void	*ft_gnl_lstclear(t_gnl_lst **lst)
+void	*ft_safe_free(t_gnl_lst **lst, char *str)
 {
 	t_gnl_lst	*next_el;
 
+	if (str)
+		free(str);
 	if (!lst)
 		return ((void *)0);
 	while (*lst)
@@ -97,34 +108,19 @@ void	*ft_gnl_lstclear(t_gnl_lst **lst)
 	return ((void *)0);
 }
 
-/*
-Allocate and returns a new string resulting from the concatenation 
-of s1 and s2. returns the new string; NULL if the memory allocation failed.
-*/
-char	*ft_strjoin(char *s1, char *s2)
+int	ft_count_line_chars(t_gnl_lst *lst)
 {
-	char	*dest;
-	size_t	s1_len;
-	size_t	s2_len;
-	size_t	i;
+	int			len;
+	t_gnl_lst	*tmp;
 
-	if (!s1)
+	if (!lst)
+		return (0);
+	tmp = lst;
+	len = 0;
+	while (tmp)
 	{
-		s1 = (char *)malloc(1 * sizeof(char));
-		s1[0] = '\0';
+		len += ft_strlen(tmp->str);
+		tmp = tmp->next;
 	}
-	if (!s1 || !s2)
-		return ((void *)0);
-	s1_len = ft_strlen((s1));
-	s2_len = ft_strlen((s2));
-	dest = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
-	if (!dest)
-		return ((void *)0);
-	i = 0;
-	while (*s1)
-		dest[i++] = *s1++;
-	while (*s2)
-		dest[i++] = *s2++;
-	dest[i] = '\0';
-	return (dest);
+	return (len);
 }
