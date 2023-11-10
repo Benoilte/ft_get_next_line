@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:54:17 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/10 15:41:56 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:43:37 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <unistd.h>
 # include <limits.h>
 
-# ifdef GET_NEXT_LINE_BONUS_H
+# ifndef GET_NEXT_LINE_BONUS_H
 #  define PATH_MAX 4096
 #  define MAXPATHLEN 4096
 #  define OPEN_MAX 256 /* We define a reasonable limit.  */
