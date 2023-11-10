@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:54:17 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/09 14:00:26 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:58:49 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
