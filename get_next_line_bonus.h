@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:54:17 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/10 14:58:49 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:38:33 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+
+# ifdef __GNU__
+#  define PATH_MAX 4096
+#  define MAXPATHLEN 4096
+#  define OPEN_MAX 256 /* We define a reasonable limit.  */
+# endif
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42

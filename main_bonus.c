@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:58:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/10 15:25:33 by bebrandt         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:38:55 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(void)
 	fd3 = open("text3.txt", O_RDONLY);
 	fd4 = open("text4.txt", O_RDONLY);
 	// ft_print_gnl(fd1, fd2, fd3, fd4);
-	printf("%s\n", OPEN_MAX);
+	printf("%d\n", OPEN_MAX);
 	close(fd1);
 	close(fd2);
 	close(fd3);
