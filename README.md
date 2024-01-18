@@ -1,7 +1,7 @@
-### Goals
+# Goals
 This project is about programming a function that returns a line read from a file descriptor and it will also make you learn a highly interesting new concept in C programming: static variables.
 
-### Rules
+## Rules
 - Repeated calls (e.g., using a loop) to your get_next_line() function should let you read the text file pointed to by the file descriptor, one line at a time.
 - Your function should return the line that was read. If there is nothing else to read or if an error occurred, it should return NULL.
 - Make sure that your function works as expected both when reading a file and when reading from the standard input.
@@ -19,7 +19,7 @@ This project is about programming a function that returns a line read from a fil
 - lseek()
 - Global variables
 
-### Bonus
+## Bonus
 This project is straightforward and doesn’t allow complex bonuses. However, we trust your creativity. If you completed the mandatory part, give a try to this bonus part. Here are the bonus part requirements:
 
 
@@ -30,7 +30,14 @@ This project is straightforward and doesn’t allow complex bonuses. However, we
   - get_next_line_bonus.h
   - get_next_line_utils_bonus.c
  
-### Result :slot_machine:
+## Result :slot_machine:
 <img width="164" alt="gnl_score" src="https://github.com/Benoilte/ft_get_next_line/assets/104198121/3b6a92d8-a716-430e-90d3-50bcb32a61b9">
 
+# Usage
 
+``make`` to compile test_get_next_line program.
+
+Run the program with an existing file as argument. It will print each line on the terminal.
+```bash
+./test_get_next_line "text.txt"
+```
