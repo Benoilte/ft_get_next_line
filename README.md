@@ -14,10 +14,10 @@ This project is about programming a function that returns a line read from a fil
 - We consider that get_next_line() has an undefined behavior if the file pointed to by the file descriptor changed since the last call whereas read() didn’t reach the end of file.
 - We also consider that get_next_line() has an undefined behavior when reading a binary file. However, you can implement a logical way to handle this behavior if you want to.
 
-### Forbidden
-- You are not allowed to use your libft in this project
-- lseek()
-- Global variables
+  ### Forbidden
+  - You are not allowed to use your libft in this project
+  - lseek()
+  - Global variables
 
 ## Bonus
 This project is straightforward and doesn’t allow complex bonuses. However, we trust your creativity. If you completed the mandatory part, give a try to this bonus part. Here are the bonus part requirements:
@@ -30,7 +30,7 @@ This project is straightforward and doesn’t allow complex bonuses. However, we
   - get_next_line_bonus.h
   - get_next_line_utils_bonus.c
  
-## Result :slot_machine:
+# Result :slot_machine:
 <img width="164" alt="gnl_score" src="https://github.com/Benoilte/ft_get_next_line/assets/104198121/3b6a92d8-a716-430e-90d3-50bcb32a61b9">
 
 # Usage
