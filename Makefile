@@ -6,11 +6,13 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/24 14:22:06 by bebrandt          #+#    #+#              #
-#    Updated: 2023/11/07 22:12:45 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/01/19 11:09:41 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	test_get_next_line
+
+NAME_BONUS	=	test_get_next_line_bonus
 
 SRCS		=	get_next_line.c get_next_line_utils.c main.c
 
@@ -42,10 +44,10 @@ all: $(NAME)
 	$(CC) $(HDRS) $(CFLAGS) -c $< -o $@
 
 $(NAME):	$(OBJS)
-	$(CC) $(HDRS) $(CFLAGS) $(OBJS) -o $(NAME) # -fsanitize=address
+	$(CC) $(HDRS) $(CFLAGS) $(OBJS) -o $(NAME)
 
 bonus:	$(OBJS_BONUS)
-	$(CC) $(HDRS) $(CFLAGS) $(OBJS_BONUS) -o $(NAME) # -fsanitize=address
+	$(CC) $(HDRS) $(CFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
 
 clean:
 	$(RM) $(OBJS) $(OBJS_BONUS)

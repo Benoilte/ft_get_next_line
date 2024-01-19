@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:50 by bebrandt          #+#    #+#             */
-/*   Updated: 2023/11/10 10:16:49 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/01/19 10:16:58 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_next_line(int fd)
 }
 
 /*
-Read n (BUFFER_SIZE) chars of the fd file until a new line is foud or until 
+Read n (BUFFER_SIZE) chars of the fd file until a new line is foud or until
 we reach the end of the file. return the line included new line if present.
 Return NULL if an error occur.
 */
@@ -79,7 +79,7 @@ size_t	ft_check_new_line(char *stash)
 
 /*
 Copy stash in str until the new line included or until the end of stash
-Add str as last element of lst. 
+Add str as last element of lst.
 Fill stash with chars behind the new line
 */
 char	*ft_get_line(char *stash, t_gnl_lst *lst)
@@ -89,7 +89,7 @@ char	*ft_get_line(char *stash, t_gnl_lst *lst)
 	char			line[BUFFER_SIZE + 1];
 
 	i = 0;
-	while (stash [i] && stash[i] != '\n')
+	while (stash[i] && stash[i] != '\n')
 		i++;
 	if (stash[i] == '\n')
 		i++;
