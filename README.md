@@ -37,7 +37,40 @@ This project is straightforward and doesn’t allow complex bonuses. However, we
 
 ``make`` to compile test_get_next_line program.
 
+``make BS=n`` to compile test_get_next_line program with a Buffer Size you choose (modify n by the value you want)
+
 Run the program with an existing file as argument. It will print each line on the terminal.
 ```bash
 ./test_get_next_line "text.txt"
+```
+
+Return exemple:
+
+```text
+text_1 first line
+text_1 second line
+text_1 third line
+....
+```
+
+# Advance usage
+
+``make bonus`` to compile test_get_next_line_bonus program.
+
+``make bonus BS=n`` to compile test_get_next_line_bonus program with a Buffer Size you choose (modify n by the value you want)
+
+Run the program with two existing files as argument. It will print each line of both text_file on the terminal.
+
+```bash
+./test_get_next_line "text_1.txt" "text_2.txt"
+```
+
+Return exemple:
+
+```text
+text_1 first line
+text_2 first line
+text_1 second line
+text_2 second line
+....
 ```
